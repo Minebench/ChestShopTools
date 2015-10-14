@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.themoep</groupId>
-    <artifactId>ChestShopTools</artifactId>
+    <artifactId>chestshoptools</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <description>BukkitTemplatePlugin description!</description>
+    <description>Additions to the ChestShop Bukkit plugin</description>
     <name>ChestShopTools</name>
 
     <properties>
