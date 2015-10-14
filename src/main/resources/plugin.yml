@@ -1,0 +1,17 @@
+name: ${project.name}
+main: de.themoep.chestshoptools.ChestShopTools
+version: '${minecraft.plugin.version}'
+description: ${project.description}
+authors: [Phoenix616]
+depends: ChestShop
+commands:
+   ChestShopTools:
+      aliases: [cst]
+      description: Command for reloading of the config
+      usage: /<command> reload
+      permission: ChestShopTools.command
+      permission-message: You don't have the permission <permission>
+permissions:
+   ChestShopTools.command:
+      description: Gives permission to use the command
+      default: op

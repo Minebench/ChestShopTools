@@ -1,0 +1,15 @@
+removeempty:
+  enabled: true
+  worlds:
+  - metro2
+  messages:
+    owner: "&cDein Shop in %world% (%location%) ist leer und wurde automatisch entfernt!"
+    buyer: "&cDer Shop ist leer und wurde automatisch entfernt!"
+enchantsigns:
+  enabled: true
+  worlds:
+  - metro2
+tradeinfo:
+  enabled: true
+  worlds:
+  - metro2
