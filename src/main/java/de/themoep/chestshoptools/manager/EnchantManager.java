@@ -110,7 +110,7 @@ public class EnchantManager extends AbstractManager {
 
     private String humanize(String string) {
         String newString = string.toLowerCase().replace('_', ' ');
-        int i = 1;
+        int i = -1;
         do {
             try {
                 newString = newString.substring(0, i + 1) + newString.substring(i + 1, i + 2).toUpperCase() + newString.substring(i + 2);
@@ -119,7 +119,7 @@ public class EnchantManager extends AbstractManager {
                 break;
             }
             i = newString.indexOf(' ', i + 2);
-        } while(i != -1 && i + 1 < newString.length());
+        } while(i != -1 && i + 2 < newString.length());
         return newString;
     }
 
