@@ -113,12 +113,12 @@ public class EnchantManager extends AbstractManager {
         int i = 1;
         do {
             try {
-                newString = newString.substring(0, i).toUpperCase() + newString.substring(i);
+                newString = newString.substring(0, i - 1) + newString.substring(i - 1, i).toUpperCase() + newString.substring(i);
             } catch(IndexOutOfBoundsException e) {
                 plugin.getLogger().log(Level.WARNING, "Could not humanize " + string + "! Returning " + newString + "! (i == " + i + ")");
                 break;
             }
-            i = newString.indexOf(' ', i);
+            i = newString.indexOf(' ', i + 1);
         } while(i != -1);
         return newString;
     }
