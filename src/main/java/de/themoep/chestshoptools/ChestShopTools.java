@@ -1,6 +1,7 @@
 package de.themoep.chestshoptools;
 
 import com.Acrobot.ChestShop.Configuration.Messages;
+import de.themoep.ShowItem.ShowItem;
 import de.themoep.chestshoptools.manager.EmptyManager;
 import de.themoep.chestshoptools.manager.EnchantManager;
 import de.themoep.chestshoptools.manager.TradeManager;
@@ -34,9 +35,15 @@ public class ChestShopTools extends JavaPlugin {
     private EnchantManager enchMan;
     private TradeManager tradeMan;
 
+    private ShowItem showItem = null;
+
     public void onEnable() {
         saveDefaultConfig();
         loadConfig();
+        getServer().getPluginCommand("shopinfo").setExecutor(new ShopInfoCommand(this));
+        if(getServer().getPluginManager().getPlugin("ShowItem") != null) {
+            showItem = (ShowItem) getServer().getPluginManager().getPlugin("ShowItem");
+        }
     }
 
     public void onDisable() {
@@ -86,4 +93,7 @@ public class ChestShopTools extends JavaPlugin {
         return Messages.prefix(msg);
     }
 
+    public ShowItem getShowItem() {
+        return showItem;
+    }
 }

@@ -4,6 +4,7 @@ version: '${minecraft.plugin.version}'
 description: ${project.description}
 authors: [Phoenix616]
 depends: ChestShop
+soft-depend: [ShowItem]
 commands:
    ChestShopTools:
       aliases: [cst]
@@ -11,7 +12,18 @@ commands:
       usage: /<command> reload
       permission: chestshoptools.command
       permission-message: You don't have the permission <permission>
+   shopinfo:
+      description: Get info about a certain shop
+      usage: /<command>
+      permission: chestshoptools.command.shopinfo
+      permission-message: You don't have the permission <permission>
 permissions:
    chestshoptools.command:
       description: Gives permission to use the command
+      default: op
+   chestshoptools.command.shopinfo:
+      description: Gives permission to use the shopinfo command
+      default: true
+   chestshoptools.command.shopinfo.moreinfo:
+      description: Gives permission to get more info with the shopinfo command like last transaction
       default: op
