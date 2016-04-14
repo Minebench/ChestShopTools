@@ -4,6 +4,7 @@ import com.Acrobot.ChestShop.ChestShop;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import de.themoep.chestshoptools.ChestShopTools;
+import de.themoep.chestshoptools.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -20,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * ChestShopTools
@@ -125,23 +125,8 @@ public class EnchantManager extends AbstractManager {
             EnchantName enchName = EnchantName.valueOf(enchantment.getName());
             return enchName.getName();
         } catch(IllegalArgumentException  e) {
-            return humanize(enchantment.getName());
+            return Utils.humanize(enchantment.getName());
         }
-    }
-
-    private String humanize(String string) {
-        String newString = string.toLowerCase().replace('_', ' ');
-        int i = -1;
-        do {
-            try {
-                newString = newString.substring(0, i + 1) + newString.substring(i + 1, i + 2).toUpperCase() + newString.substring(i + 2);
-            } catch(IndexOutOfBoundsException e) {
-                plugin.getLogger().log(Level.WARNING, "Could not humanize " + string + "! Returning " + newString + "! (i == " + i + ")");
-                break;
-            }
-            i = newString.indexOf(' ', i + 2);
-        } while(i != -1 && i + 2 < newString.length());
-        return newString;
     }
 
     private enum EnchantName {

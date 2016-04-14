@@ -9,11 +9,10 @@ import com.Acrobot.ChestShop.Events.TransactionEvent;
 import com.Acrobot.ChestShop.Utils.uBlock;
 import com.google.common.collect.ImmutableMap;
 import de.themoep.chestshoptools.ChestShopTools;
+import de.themoep.chestshoptools.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,7 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -153,7 +151,7 @@ public class EmptyManager extends AbstractManager {
                 "world", loc.getWorld().getName(),
                 "location", loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ(),
                 "price", Double.toString(price),
-                "item", item != null ? item.getType().toString() + "-": ""
+                "item", item != null ? Utils.humanize(item.getType().toString()) + " ": ""
         );
 
         if(!messageBuyer.isEmpty()) {
