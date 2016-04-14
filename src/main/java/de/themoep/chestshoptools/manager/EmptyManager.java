@@ -107,7 +107,7 @@ public class EmptyManager extends AbstractManager {
     }
 
     @EventHandler
-    public void onTrade(TransactionEvent event) {
+    public void onTrade(final TransactionEvent event) {
         if(!isManaged(event.getSign().getWorld())
                 || event.getTransactionType() != TransactionEvent.TransactionType.BUY
                 || PriceUtil.hasSellPrice(event.getSign().getLine(2))
@@ -115,10 +115,9 @@ public class EmptyManager extends AbstractManager {
                 ) {
             return;
         }
-        final TransactionEvent finalEvent = event;
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
             public void run() {
-                removeShop(finalEvent.getClient(), finalEvent.getOwner(), finalEvent.getSign(), finalEvent.getOwnerInventory());
+                removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory());
             }
         }, 1L);
     }
@@ -134,21 +133,11 @@ public class EmptyManager extends AbstractManager {
         }
 
         Chest connectedChest = (Chest) inventory.getHolder();
-        ShopDestroyedEvent destroyedEvent = new ShopDestroyedEvent(null, sign, connectedChest);
+        ShopDestroyedEvent destroyedEvent = new ShopDestroyedEvent(client, sign, connectedChest);
         ChestShop.callEvent(destroyedEvent);
 
         for(int i = 0; i < 4; i++) {
             sign.setLine(i, "");
-        }
-
-        // Remove enchantment info sign if there is one
-        Block above = sign.getBlock().getRelative(BlockFace.UP);
-        if(above.getState() instanceof Sign) {
-            Sign enchSign = (Sign) above.getState();
-            for(int i = 0; i < 4; i++) {
-                enchSign.setLine(i, "");
-            }
-            enchSign.update(true);
         }
         sign.update(true);
 
@@ -172,6 +161,7 @@ public class EmptyManager extends AbstractManager {
                 cacheMessage(owner.getUniqueId(), msg);
             }
         }
+        plugin.getLogger().log(Level.INFO, "Removed empty shop by " + owner.getName() + " in " + loc.getWorld().getName() + " at " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
         return true;
     }
 

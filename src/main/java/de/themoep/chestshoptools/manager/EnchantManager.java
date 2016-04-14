@@ -5,6 +5,7 @@ import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import de.themoep.chestshoptools.ChestShopTools;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -103,6 +104,19 @@ public class EnchantManager extends AbstractManager {
                 }
                 sign.update(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onShopRemoved(ShopDestroyedEvent event) {
+        // Remove enchantment info sign if there is one
+        Block above = event.getSign().getBlock().getRelative(BlockFace.UP);
+        if(above.getState() instanceof Sign) {
+            Sign enchSign = (Sign) above.getState();
+            for(int i = 0; i < 4; i++) {
+                enchSign.setLine(i, "");
+            }
+            enchSign.update(true);
         }
     }
 
