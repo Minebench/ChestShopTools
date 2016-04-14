@@ -9,9 +9,9 @@ commands:
       aliases: [cst]
       description: Command for reloading of the config
       usage: /<command> reload
-      permission: ChestShopTools.command
+      permission: chestshoptools.command
       permission-message: You don't have the permission <permission>
 permissions:
-   ChestShopTools.command:
+   chestshoptools.command:
       description: Gives permission to use the command
       default: op
