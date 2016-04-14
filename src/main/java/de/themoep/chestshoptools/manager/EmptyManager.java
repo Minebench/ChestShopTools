@@ -103,7 +103,7 @@ public class EmptyManager extends AbstractManager {
             return;
         }
 
-        removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory());
+        removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getPrice());
     }
 
     @EventHandler
@@ -117,12 +117,12 @@ public class EmptyManager extends AbstractManager {
         }
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
             public void run() {
-                removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory());
+                removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getPrice());
             }
         }, 1L);
     }
 
-    private boolean removeShop(Player client, OfflinePlayer owner, Sign sign, Inventory inventory) {
+    private boolean removeShop(Player client, OfflinePlayer owner, Sign sign, Inventory inventory, ItemStack[] stock, double price) {
         // Check if we can safely cleanup this shop. Adminshops don't need cleanup!
         boolean cleanupPossible = !(inventory instanceof AdminInventory)
                 && inventory.getHolder() instanceof Chest
@@ -144,10 +144,16 @@ public class EmptyManager extends AbstractManager {
         // We don't care about items which the shop shouldn't sell, remove them!
         inventory.setContents(new ItemStack[inventory.getSize() - 1]);
 
+        ItemStack item = null;
+        if(stock.length > 0) {
+            item = stock[0];
+        }
         Location loc = sign.getBlock().getLocation();
         Map<String, String> replacements = ImmutableMap.of(
                 "world", loc.getWorld().getName(),
-                "location", loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()
+                "location", loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ(),
+                "price", Double.toString(price),
+                "item", item != null ? item.getType().toString() + "-": ""
         );
 
         if(!messageBuyer.isEmpty()) {
@@ -161,7 +167,7 @@ public class EmptyManager extends AbstractManager {
                 cacheMessage(owner.getUniqueId(), msg);
             }
         }
-        plugin.getLogger().log(Level.INFO, "Removed empty shop by " + owner.getName() + " in " + loc.getWorld().getName() + " at " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
+        plugin.getLogger().log(Level.INFO, "Removed empty " + (item != null ? item.getType().toString() : " ") + "shop by " + owner.getName() + " in " + loc.getWorld().getName() + " at " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
         return true;
     }
 

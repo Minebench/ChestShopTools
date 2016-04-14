@@ -3,7 +3,7 @@ removeempty:
   worlds:
   - metro2
   messages:
-    owner: "&cDein Shop in %world% (%location%) ist leer und wurde automatisch entfernt!"
+    owner: "&cDein %price%B %item%Shop in %world% (%location%) ist leer und wurde automatisch entfernt!"
     buyer: "&cDer Shop ist leer und wurde automatisch entfernt!"
 enchantsigns:
   enabled: true
