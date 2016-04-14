@@ -60,4 +60,6 @@ public abstract class AbstractManager implements Listener {
         return worldSet.contains(worldname) || worldSet.contains("*") || worldSet.contains(".*") || worldSet.contains("(.*)");
     }
 
+    public abstract void disable();
+
 }

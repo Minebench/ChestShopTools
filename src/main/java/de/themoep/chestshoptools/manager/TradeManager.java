@@ -2,6 +2,7 @@ package de.themoep.chestshoptools.manager;
 
 import de.themoep.chestshoptools.ChestShopTools;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.HandlerList;
 
 import java.util.List;
 
@@ -23,5 +24,10 @@ import java.util.List;
 public class TradeManager extends AbstractManager {
     public TradeManager(ChestShopTools plugin, ConfigurationSection config) {
         super(plugin, config);
+    }
+
+    @Override
+    public void disable() {
+        HandlerList.unregisterAll(this);
     }
 }

@@ -2,6 +2,7 @@ package de.themoep.chestshoptools.manager;
 
 import com.Acrobot.ChestShop.ChestShop;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
+import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import de.themoep.chestshoptools.ChestShopTools;
 import org.bukkit.ChatColor;
 import org.bukkit.block.BlockFace;
@@ -10,6 +11,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -38,6 +40,11 @@ public class EnchantManager extends AbstractManager {
 
     public EnchantManager(ChestShopTools plugin, ConfigurationSection config) {
         super(plugin, config);
+    }
+
+    @Override
+    public void disable() {
+        HandlerList.unregisterAll(this);
     }
 
     @EventHandler

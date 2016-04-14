@@ -19,10 +19,23 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * ChestShopTools
@@ -42,11 +55,41 @@ import java.util.Map;
 public class EmptyManager extends AbstractManager {
     String messageOwner;
     String messageBuyer;
+    private Map<UUID, String> offlineMessages = new HashMap<UUID, String>();
 
     public EmptyManager(ChestShopTools plugin, ConfigurationSection config) {
         super(plugin, config);
         messageOwner = ChatColor.translateAlternateColorCodes('&', config.getString("messages.owner", ""));
         messageBuyer = ChatColor.translateAlternateColorCodes('&', config.getString("messages.buyer", ""));
+        try {
+            offlineMessages = (Map<UUID, String>) readMap("offlinemessages.map");
+        } catch(ClassCastException e) {
+            plugin.getLogger().log(Level.WARNING, "offlinemessages.map did not contain a UUID-String-Map or is corrupted.");
+        }
+    }
+
+    @Override
+    public void disable() {
+        writeMap(offlineMessages, "offlinemessages.map");
+        HandlerList.unregisterAll(this);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        final UUID playerId = event.getPlayer().getUniqueId();
+        if(offlineMessages.containsKey(playerId)) {
+            final String msg = offlineMessages.remove(playerId);
+            new BukkitRunnable() {
+                public void run() {
+                    Player player = plugin.getServer().getPlayer(playerId);
+                    if(player != null && player.isOnline()) {
+                        player.sendMessage(msg);
+                    } else {
+                        cacheMessage(playerId, msg);
+                    }
+                }
+            }.runTaskLater(plugin, 100);
+        }
     }
 
     @EventHandler
@@ -122,8 +165,11 @@ public class EmptyManager extends AbstractManager {
             client.sendMessage(plugin.buildMsg(messageBuyer, replacements));
         }
         if(!messageOwner.isEmpty()) {
+            String msg = plugin.buildMsg(messageOwner, replacements);
             if(owner.isOnline()) {
-                owner.getPlayer().sendMessage(plugin.buildMsg(messageOwner, replacements));
+                owner.getPlayer().sendMessage(msg);
+            } else {
+                cacheMessage(owner.getUniqueId(), msg);
             }
         }
         return true;
@@ -137,5 +183,74 @@ public class EmptyManager extends AbstractManager {
         }
 
         return true;
+    }
+
+    private void cacheMessage(UUID playerId, String msg) {
+        if(offlineMessages.containsKey(playerId)) {
+            offlineMessages.put(playerId, offlineMessages.get(playerId) + "\n" + msg);
+        } else {
+            offlineMessages.put(playerId, msg);
+        }
+    }
+
+    /**
+     * Writes a Hashmap to a file
+     * @param object The Hashmap to write
+     * @param outputFile The file to write to
+     */
+    public void writeMap(Object object, String outputFile) {
+        try {
+            File file = new File(plugin.getDataFolder(), outputFile);
+            if (!file.isFile()) {
+                if(!file.createNewFile()){
+                    throw new IOException("Error creating new file: " + file.getPath());
+                }
+            }
+            FileOutputStream fileOut = new FileOutputStream(file.getPath());
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(object);
+            out.close();
+            fileOut.close();
+            plugin.getLogger().fine("Serialized data is saved in " + file.getPath());
+        } catch(IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    /**
+     * Reads a Hashmap from a file
+     * @param inputFile The file to read from
+     * @return An Object which is a HashMap<Object,Object>
+     */
+    @SuppressWarnings("unchecked")
+    public Object readMap(String inputFile) {
+        Map<Object, Object> map = new HashMap<Object,Object>();
+        File file = new File(plugin.getDataFolder(), inputFile);
+        if (!file.isFile()) {
+            plugin.getLogger().log(Level.INFO, "No file found in " + file.getPath());
+            try {
+                if(!file.createNewFile()) {
+                    throw new IOException("Error while creating new file: " + file.getPath());
+                } else {
+                    writeMap(map, inputFile);
+                    plugin.getLogger().log(Level.INFO, "New file created in " + file.getPath());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            FileInputStream fileIn = new FileInputStream(file.getPath());
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            map = (HashMap<Object, Object>) in.readObject();
+            in.close();
+            fileIn.close();
+            plugin.getLogger().log(Level.INFO, "Sucessfully loaded cooldown.map.");
+        } catch(IOException i) {
+            plugin.getLogger().log(Level.WARNING, "No saved Map found in " + inputFile);
+        } catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 }

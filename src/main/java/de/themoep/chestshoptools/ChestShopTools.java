@@ -39,6 +39,10 @@ public class ChestShopTools extends JavaPlugin {
         loadConfig();
     }
 
+    public void onDisable() {
+        disableManagers();
+    }
+
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)	{
         if(args.length > 0) {
             if(args[0].equalsIgnoreCase("reload")) {
@@ -53,20 +57,25 @@ public class ChestShopTools extends JavaPlugin {
     private void loadConfig() {
         reloadConfig();
 
-        if(emptMan != null) {
-            HandlerList.unregisterAll(emptMan);
-        }
+        disableManagers();
+
         emptMan = new EmptyManager(this, getConfig().getConfigurationSection("removeempty"));
 
-        if(enchMan != null) {
-            HandlerList.unregisterAll(enchMan);
-        }
         enchMan = new EnchantManager(this, getConfig().getConfigurationSection("enchantsigns"));
 
-        if(tradeMan != null) {
-            HandlerList.unregisterAll(tradeMan);
-        }
         tradeMan = new TradeManager(this, getConfig().getConfigurationSection("tradeinfo"));
+    }
+
+    private void disableManagers() {
+        if(emptMan != null) {
+            emptMan.disable();
+        }
+        if(tradeMan != null) {
+            tradeMan.disable();
+        }
+        if(enchMan != null) {
+            enchMan.disable();
+        }
     }
 
 
