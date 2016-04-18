@@ -165,7 +165,7 @@ public class EmptyManager extends AbstractManager {
                 cacheMessage(owner.getUniqueId(), msg);
             }
         }
-        plugin.getLogger().log(Level.INFO, "Removed empty " + (item != null ? item.getType().toString() : " ") + "shop by " + owner.getName() + " in " + loc.getWorld().getName() + " at " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
+        plugin.getLogger().log(Level.INFO, "Removed empty " + (item != null ? item.getType().toString() : "") + " shop by " + owner.getName() + " in " + loc.getWorld().getName() + " at " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
         return true;
     }
 
