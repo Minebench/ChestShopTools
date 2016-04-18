@@ -22,6 +22,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**
@@ -55,15 +56,7 @@ public class ShopInfoCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command can only be run by a player!");
             return true;
         }
-        Block lookingAt = ((Player) sender).getTargetBlock(
-                ImmutableSet.of(
-                        Material.WALL_SIGN,
-                        Material.CHEST,
-                        Material.TRAPPED_CHEST,
-                        Material.SIGN_POST
-                ),
-                10
-        );
+        Block lookingAt = ((Player) sender).getTargetBlock((Set<Material>) null, 10);
         if(lookingAt == null) {
             sender.sendMessage(ChatColor.RED + "Please look at a shop sign or chest!" + ChatColor.DARK_GRAY + " (0)");
             return true;
