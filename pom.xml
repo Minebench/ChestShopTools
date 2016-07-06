@@ -21,8 +21,8 @@
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
-            <id>local_repo</id>
-            <url>file://${project.basedir}/repo/</url>
+            <id>minebench-repo</id>
+            <url>http://repo.minebench.de/</url>
         </repository>
     </repositories>
 
@@ -33,9 +33,9 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.acrobot</groupId>
+            <groupId>com.acrobot.chestshop</groupId>
             <artifactId>chestshop</artifactId>
-            <version>3.8.12</version>
+            <version>3.8.16-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.themoep</groupId>
