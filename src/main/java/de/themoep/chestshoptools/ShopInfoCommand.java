@@ -77,7 +77,7 @@ public class ShopInfoCommand implements CommandExecutor {
         String prices = shopSign.getLine(ChestShopSign.PRICE_LINE);
         String material = shopSign.getLine(ChestShopSign.ITEM_LINE);
 
-        String ownerName = NameManager.getFullNameFor(NameManager.getUUIDFor(name));
+        String ownerName = NameManager.getFullUsername(name);
         ItemStack item = MaterialUtil.getItem(material);
 
         if(item == null || !NumberUtil.isInteger(quantity)) {
