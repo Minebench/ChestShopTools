@@ -113,11 +113,7 @@ public class EmptyManager extends AbstractManager {
                 ) {
             return;
         }
-        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            public void run() {
-                removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getPrice());
-            }
-        }, 1L);
+        plugin.getServer().getScheduler().runTask(plugin, () -> removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getPrice()));
     }
 
     private boolean removeShop(Player client, OfflinePlayer owner, Sign sign, Inventory inventory, ItemStack[] stock, double price) {
