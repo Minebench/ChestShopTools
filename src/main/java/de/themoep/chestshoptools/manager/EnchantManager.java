@@ -39,6 +39,8 @@ import java.util.Map;
  */
 public class EnchantManager extends AbstractManager {
 
+    private static final ChatColor ENCHANTMENT_COLOR = ChatColor.AQUA;
+
     public EnchantManager(ChestShopTools plugin, ConfigurationSection config) {
         super(plugin, config);
     }
@@ -71,7 +73,7 @@ public class EnchantManager extends AbstractManager {
                             int nameLenght = 15 - (" " + entry.getValue()).length();
                             line = enchName.substring(0, nameLenght ) + " " + entry.getValue();
                         }
-                        lines.add(ChatColor.AQUA + line);
+                        lines.add(ENCHANTMENT_COLOR + line);
                         if(lines.size() >= 4) {
                             break;
                         }
@@ -113,11 +115,26 @@ public class EnchantManager extends AbstractManager {
         Block above = event.getSign().getBlock().getRelative(BlockFace.UP);
         if(above.getState() instanceof Sign) {
             Sign enchSign = (Sign) above.getState();
-            for(int i = 0; i < 4; i++) {
-                enchSign.setLine(i, "");
+            if (isEnchantmentSign(enchSign)) {
+                for (int i = 0; i < 4; i++) {
+                    enchSign.setLine(i, "");
+                }
+                enchSign.update(true);
             }
-            enchSign.update(true);
         }
+    }
+
+    public boolean isEnchantmentSign(Sign sign) {
+        int nonEmptyLines = 0;
+        for (String line : sign.getLines()) {
+            if (!line.isEmpty()) {
+                if (!line.startsWith(ENCHANTMENT_COLOR.toString())) {
+                    return false;
+                }
+                nonEmptyLines++;
+            }
+        }
+        return sign.getLines().length > 0 && nonEmptyLines > 0;
     }
 
     private String getHumanName(Enchantment enchantment) {
