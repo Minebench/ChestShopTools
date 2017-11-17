@@ -1,14 +1,13 @@
 package de.themoep.chestshoptools;
 
 import com.Acrobot.ChestShop.Configuration.Messages;
-import de.themoep.ShowItem.ShowItem;
+import de.themoep.ShowItem.api.ShowItem;
 import de.themoep.chestshoptools.manager.EmptyManager;
 import de.themoep.chestshoptools.manager.EnchantManager;
 import de.themoep.chestshoptools.manager.TradeManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;

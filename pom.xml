@@ -38,9 +38,9 @@
             <version>3.8.13-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>de.themoep</groupId>
-            <artifactId>showitem</artifactId>
-            <version>1.2.22</version>
+            <groupId>de.themoep.showitem</groupId>
+            <artifactId>api</artifactId>
+            <version>1.2.23</version>
         </dependency>
     </dependencies>
 
