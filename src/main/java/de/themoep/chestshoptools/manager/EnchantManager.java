@@ -111,6 +111,10 @@ public class EnchantManager extends AbstractManager {
 
     @EventHandler
     public void onShopRemoved(ShopDestroyedEvent event) {
+        if(!isManaged(event.getSign().getWorld())) {
+            return;
+        }
+        
         // Remove enchantment info sign if there is one
         Block above = event.getSign().getBlock().getRelative(BlockFace.UP);
         if(above.getState() instanceof Sign) {
