@@ -142,42 +142,10 @@ public class EnchantManager extends AbstractManager {
     }
 
     private String getHumanName(Enchantment enchantment) {
-        try {
-            EnchantName enchName = EnchantName.valueOf(enchantment.getName());
-            return enchName.getName();
-        } catch(IllegalArgumentException  e) {
-            return Utils.humanize(enchantment.getName());
-        }
-    }
-
-    private enum EnchantName {
-        PROTECTION_ENVIRONMENTAL    ("Protection"),
-        PROTECTION_FIRE             ("Fire Prot."),
-        PROTECTION_FALL             ("Feather Fall."),
-        PROTECTION_EXPLOSIONS       ("Blast Prot."),
-        PROTECTION_PROJECTILE       ("Proj. Prot."),
-        OXYGEN                      ("Respiration"),
-        WATER_WORKER                ("Aqua Affinity"),
-        DAMAGE_ALL                  ("Sharpness"),
-        DAMAGE_UNDEAD               ("Smite"),
-        DAMAGE_ARTHROPODS           ("Bane of Arthr."),
-        LOOT_BONUS_MOBS             ("Looting"),
-        DIG_SPEED                   ("Efficiency"),
-        DURABILITY                  ("Unbreaking"),
-        LOOT_BONUS_BLOCKS           ("Fortune"),
-        ARROW_DAMAGE                ("Power"),
-        ARROW_KNOCKBACK             ("Punch"),
-        ARROW_FIRE                  ("Flame"),
-        ARROW_INFINITE              ("Infinity");
-
-        private final String name;
-
-        EnchantName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
+        String name = plugin.getConfig().getString("enchantsigns.aliases." + enchantment.getName().toLowerCase(), null);
+        if (name != null && !name.isEmpty()) {
             return name;
         }
+        return Utils.humanize(enchantment.getName());
     }
 }

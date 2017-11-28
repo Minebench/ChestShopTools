@@ -9,6 +9,26 @@ enchantsigns:
   enabled: true
   worlds:
   - metro2
+  aliases:
+    arrow_damage: "Power"
+    arrow_knockback: "Punch"
+    arrow_fire: "Flame"
+    arrow_infinite: "Infinity"
+    damage_all: "Sharpness"
+    damage_arthropods: "Bane of Arthr."
+    damage_undead: "Smite"
+    dig_speed: "Efficiency"
+    durability: "Unbreaking"
+    loot_bonus_mobs: "Looting"
+    loot_bonus_blocks: "Fortune"
+    luck: "Luck of the Sea"
+    oxygen: "Respiration"
+    protection_environmental: "Protection"
+    protection_explosions: "Blast Prot."
+    protection_fire: "Fire Prot."
+    protection_fire: "Fire Prot."
+    protection_projectile: "Proj. Prot."
+    water_worker: "Aqua Affinity"
 tradeinfo:
   enabled: true
   worlds:
