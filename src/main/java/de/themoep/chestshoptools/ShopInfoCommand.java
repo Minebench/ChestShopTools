@@ -7,7 +7,6 @@ import com.Acrobot.ChestShop.Signs.ChestShopSign;
 import com.Acrobot.ChestShop.UUIDs.NameManager;
 import com.Acrobot.ChestShop.Utils.uBlock;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import de.themoep.ShowItem.api.ItemDataTooLongException;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,10 +18,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -94,8 +91,7 @@ public class ShopInfoCommand implements CommandExecutor {
             try {
                 String json = plugin.getShowItem().getItemConverter().createComponent(item, Level.OFF).toJsonString((Player) sender);
     
-                JSONArray textJson = new JSONArray();
-                textJson.add(new JSONObject(ImmutableMap.of("text", Messages.prefix(ChatColor.GREEN + "Item: "))));
+                JSONObject textJson = new JSONObject(ImmutableMap.of("text", Messages.prefix(ChatColor.GREEN + "Item: ")));
                 plugin.getShowItem().tellRaw(sender, textJson.toJSONString() + "," + json);
                 
             } catch (ItemDataTooLongException e) {
