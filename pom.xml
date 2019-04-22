@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>chestshoptools</artifactId>
     <groupId>de.themoep</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <description>Additions to the ChestShop Bukkit plugin</description>
     <name>ChestShopTools</name>
 
@@ -17,8 +17,8 @@
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+            <id>paper-repo</id>
+            <url>https://papermc.io/repo/</url>
         </repository>
         <repository>
             <id>minebench-repo</id>
@@ -28,14 +28,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.12-R0.1-SNAPSHOT</version>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.acrobot.chestshop</groupId>
             <artifactId>chestshop</artifactId>
-            <version>3.8.13-SNAPSHOT</version>
+            <version>3.10-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.themoep.showitem</groupId>

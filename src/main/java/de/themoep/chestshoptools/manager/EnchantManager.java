@@ -52,55 +52,55 @@ public class EnchantManager extends AbstractManager {
 
     @EventHandler
     public void onShopCreation(ShopCreatedEvent event) {
-        if(!isManaged(event.getSign().getWorld())) {
+        if (!isManaged(event.getSign().getWorld())) {
             return;
         }
 
         BlockState above = event.getSign().getBlock().getRelative(BlockFace.UP).getState();
-        if(above instanceof Sign) {
+        if (above instanceof Sign) {
             Sign sign = (Sign) above;
             String itemLine = event.getSignLine((short) 3);
             ItemStack item = ChestShop.getItemDatabase().getFromCode(itemLine.substring(itemLine.indexOf('#') + 1));
-            if(item != null && item.hasItemMeta()) {
+            if (item != null && item.hasItemMeta()) {
                 ItemMeta meta = item.getItemMeta();
 
                 List<String> lines = new ArrayList<String>();
-                if(meta.hasEnchants() && !meta.getEnchants().isEmpty()) {
-                    for(Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
+                if (meta.hasEnchants() && !meta.getEnchants().isEmpty()) {
+                    for (Map.Entry<Enchantment, Integer> entry : meta.getEnchants().entrySet()) {
                         String enchName = getHumanName(entry.getKey());
                         String line = enchName + " " + entry.getValue();
-                        if(line.length() > 15) {
+                        if (line.length() > 15) {
                             int nameLenght = 15 - (" " + entry.getValue()).length();
-                            line = enchName.substring(0, nameLenght ) + " " + entry.getValue();
+                            line = enchName.substring(0, nameLenght) + " " + entry.getValue();
                         }
                         lines.add(ENCHANTMENT_COLOR + line);
-                        if(lines.size() >= 4) {
+                        if (lines.size() >= 4) {
                             break;
                         }
                     }
                 }
-                if(meta instanceof EnchantmentStorageMeta) {
-                    for(Map.Entry<Enchantment, Integer> entry : ((EnchantmentStorageMeta) meta).getStoredEnchants().entrySet()) {
+                if (meta instanceof EnchantmentStorageMeta) {
+                    for (Map.Entry<Enchantment, Integer> entry : ((EnchantmentStorageMeta) meta).getStoredEnchants().entrySet()) {
                         String enchName = getHumanName(entry.getKey());
                         String line = enchName + " " + entry.getValue();
-                        if(line.length() > 15) {
+                        if (line.length() > 15) {
                             int nameLenght = 15 - (" " + entry.getValue()).length();
-                            line = enchName.substring(0, nameLenght ) + " " + entry.getValue();
+                            line = enchName.substring(0, nameLenght) + " " + entry.getValue();
                         }
                         lines.add(ChatColor.YELLOW + line);
-                        if(lines.size() >= 4) {
+                        if (lines.size() >= 4) {
                             break;
                         }
                     }
                 }
-                for(int i = 0; i < 4; i++) {
+                for (int i = 0; i < 4; i++) {
                     sign.setLine(i, "");
                 }
                 int lineNmbr = lines.size() >= 3 ? 0 : 1;
-                for(String line : lines) {
+                for (String line : lines) {
                     sign.setLine(lineNmbr, line);
                     lineNmbr++;
-                    if(lineNmbr >= 4) {
+                    if (lineNmbr >= 4) {
                         break;
                     }
                 }
@@ -111,14 +111,15 @@ public class EnchantManager extends AbstractManager {
 
     @EventHandler
     public void onShopRemoved(ShopDestroyedEvent event) {
-        if(!isManaged(event.getSign().getWorld())) {
+        if (!isManaged(event.getSign().getWorld())) {
             return;
         }
-        
+
         // Remove enchantment info sign if there is one
         Block above = event.getSign().getBlock().getRelative(BlockFace.UP);
-        if(above.getState() instanceof Sign) {
-            Sign enchSign = (Sign) above.getState();
+        BlockState state = above.getState();
+        if (state instanceof Sign) {
+            Sign enchSign = (Sign) state;
             if (isEnchantmentSign(enchSign)) {
                 for (int i = 0; i < 4; i++) {
                     enchSign.setLine(i, "");

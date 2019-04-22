@@ -25,12 +25,12 @@ public class Utils {
         do {
             try {
                 newString = newString.substring(0, i + 1) + newString.substring(i + 1, i + 2).toUpperCase() + newString.substring(i + 2);
-            } catch(IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 System.out.print("[ERROR] Could not humanize " + string + "! Returning " + newString + "! (i == " + i + ")");
                 break;
             }
             i = newString.indexOf(' ', i + 2);
-        } while(i != -1 && i + 2 < newString.length());
+        } while (i != -1 && i + 2 < newString.length());
         return newString;
     }
 }

@@ -11,12 +11,14 @@ import de.themoep.ShowItem.api.ItemDataTooLongException;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
 
@@ -46,26 +48,27 @@ public class ShopInfoCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)	{
-        if(args.length > 0) {
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        if (args.length > 0) {
             return false;
         }
-        if(!(sender instanceof Player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "This command can only be run by a player!");
             return true;
         }
         Block lookingAt = ((Player) sender).getTargetBlock((Set<Material>) null, 10);
-        if(lookingAt == null) {
+        if (lookingAt == null) {
             sender.sendMessage(ChatColor.RED + "Please look at a shop sign or chest!" + ChatColor.DARK_GRAY + " (0)");
             return true;
         }
         Sign shopSign = null;
-        if(lookingAt.getState() instanceof Chest) {
-            shopSign = uBlock.getConnectedSign((Chest) lookingAt.getState());
-        } else if(lookingAt.getState() instanceof Sign && ChestShopSign.isValid(lookingAt)) {
-            shopSign = (Sign) lookingAt.getState();
+        BlockState state = lookingAt.getState(false);
+        if (state instanceof InventoryHolder) {
+            shopSign = uBlock.getConnectedSign(state);
+        } else if (state instanceof Sign && ChestShopSign.isValid(lookingAt)) {
+            shopSign = (Sign) state;
         }
-        if(shopSign == null) {
+        if (shopSign == null) {
             sender.sendMessage(ChatColor.RED + "Please look at a shop sign or chest!" + ChatColor.DARK_GRAY + " (1)");
             return true;
         }
@@ -79,21 +82,21 @@ public class ShopInfoCommand implements CommandExecutor {
         ownerName = ownerName != null ? ownerName : name;
         ItemStack item = MaterialUtil.getItem(material);
 
-        if(item == null || !NumberUtil.isInteger(quantity)) {
+        if (item == null || !NumberUtil.isInteger(quantity)) {
             sender.sendMessage(Messages.prefix(Messages.INVALID_SHOP_DETECTED));
             return true;
         }
 
         sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Besitzer: " + ChatColor.WHITE + ownerName));
-        if(plugin.getShowItem() == null) {
+        if (plugin.getShowItem() == null) {
             sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Item: " + ChatColor.WHITE + material));
         } else {
             try {
                 String json = plugin.getShowItem().getItemConverter().createComponent(item, Level.OFF).toJsonString((Player) sender);
-    
+
                 JSONObject textJson = new JSONObject(ImmutableMap.of("text", Messages.prefix(ChatColor.GREEN + "Item: ")));
                 plugin.getShowItem().tellRaw(sender, textJson.toJSONString() + "," + json);
-                
+
             } catch (ItemDataTooLongException e) {
                 sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Item: " + ChatColor.WHITE + material + ChatColor.RED + " (Data too long)"));
                 plugin.getLogger().log(Level.WARNING, "Error while trying to show info of shop at "

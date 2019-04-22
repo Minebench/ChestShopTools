@@ -13,6 +13,7 @@ import de.themoep.chestshoptools.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
@@ -119,8 +120,8 @@ public class EmptyManager extends AbstractManager {
     private boolean removeShop(Player client, OfflinePlayer owner, Sign sign, Inventory inventory, ItemStack[] stock, double price) {
         // Check if we can safely cleanup this shop. Adminshops don't need cleanup!
         boolean cleanupPossible = !(inventory instanceof AdminInventory)
-                && inventory.getHolder() instanceof Chest
-                && sign.equals(uBlock.getConnectedSign((Chest) inventory.getHolder()));
+                && inventory.getHolder() instanceof BlockState
+                && sign.equals(uBlock.getConnectedSign((BlockState) inventory.getHolder()));
 
         if(!cleanupPossible) {
             return false;

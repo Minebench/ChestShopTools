@@ -40,7 +40,7 @@ public class ChestShopTools extends JavaPlugin {
         saveDefaultConfig();
         loadConfig();
         getServer().getPluginCommand("shopinfo").setExecutor(new ShopInfoCommand(this));
-        if(getServer().getPluginManager().getPlugin("ShowItem") != null) {
+        if (getServer().getPluginManager().getPlugin("ShowItem") != null) {
             showItem = (ShowItem) getServer().getPluginManager().getPlugin("ShowItem");
         }
     }
@@ -49,9 +49,9 @@ public class ChestShopTools extends JavaPlugin {
         disableManagers();
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)	{
-        if(args.length > 0) {
-            if(args[0].equalsIgnoreCase("reload")) {
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("reload")) {
                 loadConfig();
                 sender.sendMessage(ChatColor.GREEN + "[CST] Reloaded Config");
                 return true;
@@ -73,20 +73,20 @@ public class ChestShopTools extends JavaPlugin {
     }
 
     private void disableManagers() {
-        if(emptMan != null) {
+        if (emptMan != null) {
             emptMan.disable();
         }
-        if(tradeMan != null) {
+        if (tradeMan != null) {
             tradeMan.disable();
         }
-        if(enchMan != null) {
+        if (enchMan != null) {
             enchMan.disable();
         }
     }
 
 
     public String buildMsg(String msg, Map<String, String> replacements) {
-        for(Map.Entry<String, String> entry : replacements.entrySet()) {
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
             msg = msg.replace("%" + entry.getKey() + "%", entry.getValue());
         }
         return Messages.prefix(msg);
