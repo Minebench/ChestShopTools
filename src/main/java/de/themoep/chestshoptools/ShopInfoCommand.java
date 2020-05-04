@@ -3,6 +3,7 @@ package de.themoep.chestshoptools;
 import com.Acrobot.Breeze.Utils.MaterialUtil;
 import com.Acrobot.Breeze.Utils.NumberUtil;
 import com.Acrobot.ChestShop.Configuration.Messages;
+import com.Acrobot.ChestShop.Events.ItemInfoEvent;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
 import com.Acrobot.ChestShop.UUIDs.NameManager;
 import com.Acrobot.ChestShop.Utils.uBlock;
@@ -88,6 +89,8 @@ public class ShopInfoCommand implements CommandExecutor {
         }
 
         sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Besitzer: " + ChatColor.WHITE + ownerName));
+        sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Anzahl: " + ChatColor.WHITE + quantity));
+        sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Preis: " + ChatColor.WHITE + prices));
         if (plugin.getShowItem() == null) {
             sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Item: " + ChatColor.WHITE + material));
         } else {
@@ -103,8 +106,7 @@ public class ShopInfoCommand implements CommandExecutor {
                         + lookingAt.getWorld().getName() + "/" + lookingAt.getX() + "/" + lookingAt.getY() + "/" + lookingAt.getZ() + ": " + e.getMessage());
             }
         }
-        sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Anzahl: " + ChatColor.WHITE + quantity));
-        sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Preis: " + ChatColor.WHITE + prices));
+        new ItemInfoEvent(sender, item).callEvent();
 
         return true;
     }
