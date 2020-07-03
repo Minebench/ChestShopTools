@@ -4,7 +4,7 @@ version: '${minecraft.plugin.version}'
 api-version: '1.13'
 description: ${project.description}
 authors: [Phoenix616]
-depends: ChestShop
+depend: [ChestShop]
 soft-depend: [ShowItem]
 commands:
    ChestShopTools:
