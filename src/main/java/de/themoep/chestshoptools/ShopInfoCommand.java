@@ -7,13 +7,12 @@ import com.Acrobot.ChestShop.Events.ItemInfoEvent;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
 import com.Acrobot.ChestShop.UUIDs.NameManager;
 import com.Acrobot.ChestShop.Utils.uBlock;
-import com.google.common.collect.ImmutableMap;
 import de.themoep.ShowItem.api.ItemDataTooLongException;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +20,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.json.simple.JSONObject;
 
 import java.util.Set;
 import java.util.logging.Level;
@@ -84,7 +82,7 @@ public class ShopInfoCommand implements CommandExecutor {
         ItemStack item = MaterialUtil.getItem(material);
 
         if (item == null || !NumberUtil.isInteger(quantity)) {
-            sender.sendMessage(Messages.prefix(Messages.INVALID_SHOP_DETECTED));
+            Messages.INVALID_SHOP_DETECTED.sendWithPrefix(sender);
             return true;
         }
 
@@ -95,10 +93,8 @@ public class ShopInfoCommand implements CommandExecutor {
             sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Item: " + ChatColor.WHITE + material));
         } else {
             try {
-                String json = plugin.getShowItem().getItemConverter().createComponent(item, Level.OFF).toJsonString((Player) sender);
-
-                JSONObject textJson = new JSONObject(ImmutableMap.of("text", Messages.prefix(ChatColor.GREEN + "Item: ")));
-                plugin.getShowItem().tellRaw(sender, textJson.toJSONString() + "," + json);
+                BukkitAudiences.create(plugin).sender(sender).sendMessage(
+                        plugin.getShowItem().getItemConverter().createComponent(item, Level.OFF).toTextComponent((Player) sender));
 
             } catch (ItemDataTooLongException e) {
                 sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Item: " + ChatColor.WHITE + material + ChatColor.RED + " (Data too long)"));
