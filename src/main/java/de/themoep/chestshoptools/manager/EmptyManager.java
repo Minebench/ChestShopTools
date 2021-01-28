@@ -3,6 +3,7 @@ package de.themoep.chestshoptools.manager;
 import com.Acrobot.Breeze.Utils.PriceUtil;
 import com.Acrobot.ChestShop.ChestShop;
 import com.Acrobot.ChestShop.Containers.AdminInventory;
+import com.Acrobot.ChestShop.Database.Account;
 import com.Acrobot.ChestShop.Events.PreTransactionEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import com.Acrobot.ChestShop.Events.TransactionEvent;
@@ -12,7 +13,6 @@ import de.themoep.chestshoptools.ChestShopTools;
 import de.themoep.chestshoptools.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -102,7 +103,7 @@ public class EmptyManager extends AbstractManager {
             return;
         }
 
-        removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getPrice());
+        removeShop(event.getClient(), event.getOwnerAccount(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getExactPrice());
     }
 
     @EventHandler
@@ -114,10 +115,10 @@ public class EmptyManager extends AbstractManager {
                 ) {
             return;
         }
-        plugin.getServer().getScheduler().runTask(plugin, () -> removeShop(event.getClient(), event.getOwner(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getPrice()));
+        plugin.getServer().getScheduler().runTask(plugin, () -> removeShop(event.getClient(), event.getOwnerAccount(), event.getSign(), event.getOwnerInventory(), event.getStock(), event.getExactPrice()));
     }
 
-    private boolean removeShop(Player client, OfflinePlayer owner, Sign sign, Inventory inventory, ItemStack[] stock, double price) {
+    private boolean removeShop(Player client, Account owner, Sign sign, Inventory inventory, ItemStack[] stock, BigDecimal price) {
         // Check if we can safely cleanup this shop. Adminshops don't need cleanup!
         boolean cleanupPossible = !(inventory instanceof AdminInventory)
                 && inventory.getHolder() instanceof BlockState
@@ -147,7 +148,7 @@ public class EmptyManager extends AbstractManager {
         Map<String, String> replacements = ImmutableMap.of(
                 "world", loc.getWorld().getName(),
                 "location", loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ(),
-                "price", Double.toString(price),
+                "price", price.toString(),
                 "item", item != null ? Utils.humanize(item.getType().toString()) + " ": ""
         );
 
@@ -156,10 +157,11 @@ public class EmptyManager extends AbstractManager {
         }
         if(!messageOwner.isEmpty()) {
             String msg = plugin.buildMsg(messageOwner, replacements);
-            if(owner.isOnline()) {
-                owner.getPlayer().sendMessage(msg);
+            Player player = plugin.getServer().getPlayer(owner.getUuid());
+            if (player != null) {
+                player.sendMessage(msg);
             } else {
-                cacheMessage(owner.getUniqueId(), msg);
+                cacheMessage(owner.getUuid(), msg);
             }
         }
         plugin.getLogger().log(Level.INFO, "Removed empty " + (item != null ? item.getType().toString() : "") + " shop by " + owner.getName() + " in " + loc.getWorld().getName() + " at " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
