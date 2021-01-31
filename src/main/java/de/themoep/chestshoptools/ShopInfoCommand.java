@@ -2,10 +2,11 @@ package de.themoep.chestshoptools;
 
 import com.Acrobot.Breeze.Utils.MaterialUtil;
 import com.Acrobot.Breeze.Utils.NumberUtil;
+import com.Acrobot.ChestShop.ChestShop;
 import com.Acrobot.ChestShop.Configuration.Messages;
+import com.Acrobot.ChestShop.Events.AccountQueryEvent;
 import com.Acrobot.ChestShop.Events.ItemInfoEvent;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
-import com.Acrobot.ChestShop.UUIDs.NameManager;
 import com.Acrobot.ChestShop.Utils.uBlock;
 import de.themoep.ShowItem.api.ItemDataTooLongException;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -77,7 +78,14 @@ public class ShopInfoCommand implements CommandExecutor {
         String prices = shopSign.getLine(ChestShopSign.PRICE_LINE);
         String material = shopSign.getLine(ChestShopSign.ITEM_LINE);
 
-        String ownerName = NameManager.getFullUsername(name);
+        AccountQueryEvent queryEvent = new AccountQueryEvent(name);
+        ChestShop.callEvent(queryEvent);
+        if (queryEvent.getAccount() == null) {
+            Messages.INVALID_SHOP_DETECTED.sendWithPrefix(sender);
+            return true;
+        }
+
+        String ownerName = queryEvent.getAccount().getName();
         ownerName = ownerName != null ? ownerName : name;
         ItemStack item = MaterialUtil.getItem(material);
 

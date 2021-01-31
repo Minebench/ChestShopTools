@@ -1,7 +1,5 @@
 package de.themoep.chestshoptools;
 
-import java.util.logging.Level;
-
 /**
  * Copyright 2016 Max Lee (https://github.com/Phoenix616/)
  * <p/>
