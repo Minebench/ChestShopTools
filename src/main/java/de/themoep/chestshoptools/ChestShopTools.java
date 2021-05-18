@@ -39,7 +39,7 @@ public class ChestShopTools extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         loadConfig();
-        getServer().getPluginCommand("shopinfo").setExecutor(new ShopInfoCommand(this));
+        getServer().getPluginCommand("cstshopinfo").setExecutor(new ShopInfoCommand(this));
         if (getServer().getPluginManager().getPlugin("ShowItem") != null) {
             showItem = (ShowItem) getServer().getPluginManager().getPlugin("ShowItem");
         }
