@@ -63,7 +63,7 @@
             </activation>
             <properties>
                 <buildNumber>0</buildNumber>
-                <buildDescription>(manually compiled)</buildDescription>
+                <buildDescription>(compiled at ${maven.build.timestamp})</buildDescription>
             </properties>
         </profile>
         <profile>
@@ -75,7 +75,7 @@
             </activation>
             <properties>
                 <buildNumber>${env.BUILD_NUMBER}</buildNumber>
-                <buildDescription>(build #${env.BUILD_NUMBER})</buildDescription>
+                <buildDescription>(build ${env.BUILD_NUMBER})</buildDescription>
             </properties>
         </profile>
     </profiles>

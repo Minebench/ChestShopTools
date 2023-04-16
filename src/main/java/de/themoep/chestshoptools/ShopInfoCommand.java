@@ -8,7 +8,6 @@ import com.Acrobot.ChestShop.Events.AccountQueryEvent;
 import com.Acrobot.ChestShop.Events.ItemInfoEvent;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
 import com.Acrobot.ChestShop.Utils.uBlock;
-import de.themoep.ShowItem.api.ItemDataTooLongException;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -104,8 +103,10 @@ public class ShopInfoCommand implements CommandExecutor {
                 BukkitAudiences.create(plugin).sender(sender).sendMessage(
                         plugin.getShowItem().getItemConverter().createComponent(item, Level.OFF).toTextComponent((Player) sender));
 
-            } catch (ItemDataTooLongException e) {
-                sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Item: " + ChatColor.WHITE + material + ChatColor.RED + " (Data too long)"));
+            } catch (Exception e) {
+                if (e.getClass().getSimpleName().equals("ItemDataTooLongException")) {
+                    sender.sendMessage(Messages.prefix(ChatColor.GREEN + "Item: " + ChatColor.WHITE + material + ChatColor.RED + " (Data too long)"));
+                }
                 plugin.getLogger().log(Level.WARNING, "Error while trying to show info of shop at "
                         + lookingAt.getWorld().getName() + "/" + lookingAt.getX() + "/" + lookingAt.getY() + "/" + lookingAt.getZ() + ": " + e.getMessage());
             }
