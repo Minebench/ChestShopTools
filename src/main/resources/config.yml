@@ -7,6 +7,7 @@ removeempty:
     buyer: "&cDer Shop ist leer und wurde automatisch entfernt!"
 enchantsigns:
   enabled: true
+  auto-create-sign: false
   worlds:
   - metro2
   aliases:
@@ -25,7 +26,6 @@ enchantsigns:
     oxygen: "Respiration"
     protection_environmental: "Protection"
     protection_explosions: "Blast Prot."
-    protection_fire: "Fire Prot."
     protection_fire: "Fire Prot."
     protection_projectile: "Proj. Prot."
     water_worker: "Aqua Affinity"

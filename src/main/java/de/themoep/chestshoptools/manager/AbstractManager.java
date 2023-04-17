@@ -26,19 +26,20 @@ import java.util.Set;
  */
 public abstract class AbstractManager implements Listener {
 
-    ChestShopTools plugin;
-    private Set<String> worldSet = new HashSet<String>();
+    protected final ConfigurationSection config;
+    protected final ChestShopTools plugin;
+    private Set<String> worldSet = new HashSet<>();
 
     public AbstractManager(ChestShopTools plugin, ConfigurationSection config) {
         this.plugin = plugin;
-        if(config != null && config.getBoolean("enabled", false)) {
+        this.config = config;
+        if (config != null && config.getBoolean("enabled", false)) {
             List<String> worldList = config.getStringList("worlds");
-            if(worldList != null) {
-                worldSet.addAll(worldList);
-                if(worldList.size() > 0) {
-                    plugin.getServer().getPluginManager().registerEvents(this, plugin);
-                }
+            worldSet.addAll(worldList);
+            if (worldList.size() > 0) {
+                plugin.getServer().getPluginManager().registerEvents(this, plugin);
             }
+            plugin.getLogger().info("Enabled " + getClass().getSimpleName());
         }
     }
 
