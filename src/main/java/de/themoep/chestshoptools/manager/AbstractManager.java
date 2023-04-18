@@ -39,7 +39,7 @@ public abstract class AbstractManager implements Listener {
             if (worldList.size() > 0) {
                 plugin.getServer().getPluginManager().registerEvents(this, plugin);
             }
-            plugin.getLogger().info("Enabled " + getClass().getSimpleName());
+            plugin.getLogger().info("Enabled " + getName());
         }
     }
 
@@ -59,6 +59,10 @@ public abstract class AbstractManager implements Listener {
      */
     public boolean isManaged(String worldname) {
         return worldSet.contains(worldname) || worldSet.contains("*") || worldSet.contains(".*") || worldSet.contains("(.*)");
+    }
+
+    public String getName() {
+        return getClass().getSimpleName();
     }
 
     public abstract void disable();

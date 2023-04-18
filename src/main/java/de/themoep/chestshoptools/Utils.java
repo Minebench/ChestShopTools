@@ -1,5 +1,10 @@
 package de.themoep.chestshoptools;
 
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.Locale;
+
 /**
  * Copyright 2016 Max Lee (https://github.com/Phoenix616/)
  * <p/>

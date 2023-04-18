@@ -13,7 +13,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -24,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -43,12 +43,15 @@ import java.util.Map;
  */
 public class EnchantManager extends AbstractManager {
 
-    private static final ChatColor ENCHANTMENT_COLOR = ChatColor.AQUA;
+    private final ChatColor enchantmentColor;
+    private final ChatColor enchantmentStorageColor;
     private final boolean autoCreateSign;
 
     public EnchantManager(ChestShopTools plugin, ConfigurationSection config) {
         super(plugin, config);
         autoCreateSign = config.getBoolean("auto-create-sign");
+        enchantmentColor = getColor("enchant-color", ChatColor.AQUA);
+        enchantmentStorageColor = getColor("enchant-storage-color", ChatColor.YELLOW);
     }
 
     @Override
@@ -96,7 +99,7 @@ public class EnchantManager extends AbstractManager {
                                 int nameLenght = 15 - (" " + entry.getValue()).length();
                                 line = enchName.substring(0, nameLenght) + " " + entry.getValue();
                             }
-                            lines.add(ENCHANTMENT_COLOR + line);
+                            lines.add(enchantmentColor + line);
                             if (lines.size() >= 4) {
                                 break;
                             }
@@ -110,7 +113,7 @@ public class EnchantManager extends AbstractManager {
                                 int nameLenght = 15 - (" " + entry.getValue()).length();
                                 line = enchName.substring(0, nameLenght) + " " + entry.getValue();
                             }
-                            lines.add(ChatColor.YELLOW + line);
+                            lines.add(enchantmentStorageColor + line);
                             if (lines.size() >= 4) {
                                 break;
                             }
@@ -157,7 +160,7 @@ public class EnchantManager extends AbstractManager {
         int nonEmptyLines = 0;
         for (String line : sign.getLines()) {
             if (!line.isEmpty()) {
-                if (!line.startsWith(ENCHANTMENT_COLOR.toString())) {
+                if (!line.startsWith(enchantmentColor.toString()) && !line.startsWith(enchantmentStorageColor.toString())) {
                     return false;
                 }
                 nonEmptyLines++;
@@ -172,5 +175,14 @@ public class EnchantManager extends AbstractManager {
             return name;
         }
         return Utils.humanize(enchantment.getName());
+    }
+
+    private ChatColor getColor(String key, ChatColor defaultColor) {
+        try {
+            return ChatColor.valueOf(config.getString(key).toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning(getName() + ": " + config.getString(key) + " is not a valid color for " + key);
+        }
+        return defaultColor;
     }
 }

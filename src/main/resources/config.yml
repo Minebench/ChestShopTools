@@ -8,6 +8,8 @@ removeempty:
 enchantsigns:
   enabled: true
   auto-create-sign: false
+  enchant-color: aqua
+  enchant-storage-color: yellow
   worlds:
   - metro2
   aliases:
