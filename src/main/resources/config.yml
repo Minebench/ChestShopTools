@@ -1,7 +1,7 @@
 removeempty:
-  enabled: true
+  enabled: false
   worlds:
-  - metro2
+  - "*"
   messages:
     owner: "&cDein %price%B %item%Shop in %world% (%location%) ist leer und wurde automatisch entfernt!"
     buyer: "&cDer Shop ist leer und wurde automatisch entfernt!"
@@ -11,7 +11,7 @@ enchantsigns:
   enchant-color: aqua
   enchant-storage-color: yellow
   worlds:
-  - metro2
+  - "*"
   aliases:
     arrow_damage: "Power"
     arrow_knockback: "Punch"
@@ -31,7 +31,19 @@ enchantsigns:
     protection_fire: "Fire Prot."
     protection_projectile: "Proj. Prot."
     water_worker: "Aqua Affinity"
-tradeinfo:
+potionsigns:
   enabled: true
+  auto-create-sign: false
+  show-extended: true
+  show-upgraded: true
+  good-color: blue
+  neutral-color: dark_aqua
+  bad-color: red
   worlds:
-  - metro2
+  - "*"
+  aliases:
+    heal: "Healing"
+tradeinfo:
+  enabled: false
+  worlds:
+  - "*"

@@ -4,6 +4,7 @@ import com.Acrobot.ChestShop.Configuration.Messages;
 import de.themoep.ShowItem.api.ShowItem;
 import de.themoep.chestshoptools.manager.EmptyManager;
 import de.themoep.chestshoptools.manager.EnchantManager;
+import de.themoep.chestshoptools.manager.PotionManager;
 import de.themoep.chestshoptools.manager.TradeManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -32,6 +33,7 @@ public class ChestShopTools extends JavaPlugin {
 
     private EmptyManager emptMan;
     private EnchantManager enchMan;
+    private PotionManager potMan;
     private TradeManager tradeMan;
 
     private ShowItem showItem = null;
@@ -69,6 +71,8 @@ public class ChestShopTools extends JavaPlugin {
 
         enchMan = new EnchantManager(this, getConfig().getConfigurationSection("enchantsigns"));
 
+        potMan = new PotionManager(this, getConfig().getConfigurationSection("potionsigns"));
+
         tradeMan = new TradeManager(this, getConfig().getConfigurationSection("tradeinfo"));
     }
 
@@ -81,6 +85,9 @@ public class ChestShopTools extends JavaPlugin {
         }
         if (enchMan != null) {
             enchMan.disable();
+        }
+        if (potMan != null) {
+            potMan.disable();
         }
     }
 
